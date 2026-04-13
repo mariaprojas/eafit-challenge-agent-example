@@ -1,0 +1,12 @@
+# VS Agent data
+data/
+
+# Generated IDs
+ids.env
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
