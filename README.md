@@ -72,8 +72,8 @@ The `.github/workflows/deploy.yml` workflow deploys the agent to the shared EAFI
 | `K8S_NAMESPACE` | Target namespace (ideally, use your team name) |
 | `EXAMPLE_AGENT_OPENAI_API_KEY` | OpenAI API key for the chatbot |
 | `EXAMPLE_AGENT_POSTGRES_PASSWORD` | PostgreSQL password |
-| `EXAMPLE_AGENT_MCP_CONFIG_ENCRYPTION_KEY` | Encryption key for MCP user configs |
-| `EXAMPLE_AGENT_WALLET_KEY` | VS Agent wallet encryption key |
+| `EXAMPLE_AGENT_MCP_CONFIG_ENCRYPTION_KEY` | Encryption key for MCP user configs (generate with `openssl rand -hex 32`) |
+| `EXAMPLE_AGENT_WALLET_KEY` | VS Agent wallet encryption key (generate with `openssl rand -base64 32`) |
 | `EXAMPLE_AGENT_VSAGENT_DB_PASSWORD` | VS Agent internal DB password |
 
 ### Deployment
