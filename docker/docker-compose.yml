@@ -48,6 +48,7 @@ services:
       - "${CHATBOT_PORT:-3003}:${CHATBOT_PORT:-3003}"
     environment:
       - APP_PORT=${CHATBOT_PORT:-3003}
+      - AGENT_PACK_PATH=/app/agent-packs/example-agent
       - LOG_LEVEL=3
       - LLM_PROVIDER=${LLM_PROVIDER:-openai}
       - OPENAI_MODEL=${OPENAI_MODEL:-gpt-5.4-mini}
