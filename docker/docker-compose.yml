@@ -42,7 +42,9 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   chatbot:
-    image: ${CHATBOT_IMAGE:-io2060/hologram-generic-ai-agent-app:v1.11.2}
+    build:
+      context: .
+      dockerfile: Dockerfile
     platform: linux/amd64
     ports:
       - "${CHATBOT_PORT:-3003}:${CHATBOT_PORT:-3003}"
@@ -50,9 +52,9 @@ services:
       - APP_PORT=${CHATBOT_PORT:-3003}
       - AGENT_PACK_PATH=/app/agent-packs/example-agent
       - LOG_LEVEL=3
-      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
-      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-5.4-mini}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LLM_PROVIDER=anthropic
+      - ANTHROPIC_MODEL=claude-sonnet-4-6
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - VECTOR_STORE=redis
       - VECTOR_INDEX_NAME=example_agent
       - RAG_PROVIDER=langchain

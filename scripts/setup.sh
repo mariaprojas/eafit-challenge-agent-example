@@ -111,18 +111,10 @@ fi
 
 # Start ngrok tunnel
 log "Starting ngrok tunnel on port ${VS_AGENT_PUBLIC_PORT}..."
-pkill -f "ngrok http ${VS_AGENT_PUBLIC_PORT}" 2>/dev/null || true
-sleep 1
-ngrok http "$VS_AGENT_PUBLIC_PORT" --log=stdout > /tmp/ngrok-example-agent.log 2>&1 &
-NGROK_PID=$!
-sleep 5
 
-NGROK_URL=$(curl -sf http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url // empty')
-if [ -z "$NGROK_URL" ]; then
-  err "Failed to get ngrok URL. Is ngrok installed and authenticated?"
-  exit 1
-fi
-NGROK_DOMAIN=$(echo "$NGROK_URL" | sed 's|https://||')
+
+NGROK_URL=https://torporific-derick-hyponastic.ngrok-free.dev
+NGROK_DOMAIN=torporific-derick-hyponastic.ngrok-free.dev
 ok "ngrok tunnel: $NGROK_URL (domain: $NGROK_DOMAIN)"
 
 # Start VS Agent container
