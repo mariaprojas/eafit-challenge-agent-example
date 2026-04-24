@@ -10,3 +10,6 @@ ids.env
 # Editor
 .vscode/
 .idea/
+
+.env
+docker/.env
