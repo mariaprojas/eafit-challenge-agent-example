@@ -1,4 +1,4 @@
-# Documento: Dialnet-IntegracionYUsosDeLosSistemasDeGestionISO900114001-9545984.pdf
+# Documento: Dialnet-IntegracionYUsosDeLosSistemasDeGestionISO900114001
 
 TELOS: Revista de Estudios Interdisciplinarios en Ciencias Sociales 
 ISSN 1317-0570 / ISSN (e) 2343-5763 
