@@ -1,5 +1,5 @@
 FROM io2060/hologram-generic-ai-agent-app:v1.12.0
-RUN sed -i "s/modelName: this.config.get('appConfig.anthropicModel') ?? 'claude-3'/modelName: process.env.ANTHROPIC_MODEL ?? 'claude-3-haiku-20240307'/g" /app/dist/llm/llm.service.js
+RUN sed -i "s/modelName: this.config.get('appConfig.anthropicModel') ?? 'claude-3'/modelName: process.env.ANTHROPIC_MODEL ?? 'claude-haiku-4-5-20251001'/g" /app/dist/llm/llm.service.js
 RUN FILE="/app/node_modules/.pnpm/@langchain+anthropic@0.3.33_@langchain+core@0.3.79_openai@4.104.0_ws@8.18.3_zod@3.25.76___zod@3.25.76/node_modules/@langchain/anthropic/dist/chat_models.js" && sed -i '/Object.defineProperty(this, "topP"/{n;n;n;n;s/value: -1/value: undefined/}' "$FILE" && sed -i '/Object.defineProperty(this, "topK"/{n;n;n;n;s/value: -1/value: undefined/}' "$FILE"
 RUN FILE="/app/node_modules/.pnpm/@langchain+anthropic@0.3.33_@langchain+core@0.3.79_openai@4.104.0_ws@8.18.3_zod@3.25.76___zod@3.25.76/node_modules/@langchain/anthropic/dist/chat_models.cjs" && sed -i '/Object.defineProperty(this, "topP"/{n;n;n;n;s/value: -1/value: undefined/}' "$FILE" && sed -i '/Object.defineProperty(this, "topK"/{n;n;n;n;s/value: -1/value: undefined/}' "$FILE"
 RUN printf '%s\n' \

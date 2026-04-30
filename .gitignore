@@ -11,5 +11,10 @@ ids.env
 .vscode/
 .idea/
 
+# Archivos de configuración con llaves privadas
+config.env
 .env
-docker/.env
+*.env
+
+# Carpeta de conocimiento local (RAG)
+data/docs/

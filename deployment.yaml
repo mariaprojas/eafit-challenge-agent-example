@@ -140,8 +140,8 @@ artemis:
 vs-agent-chart:
   enabled: true
   name: example-agent
-  didcommLabel: 'Example Agent'
-  didcommInvitationImageUrl: 'https://hologram.zone/images/github.svg'
+  didcommLabel: 'Asistente de Pre-Auditoría'
+  didcommInvitationImageUrl: 'https://hologram.zone/images/verana.svg'
   eventsBaseUrl: http://example-agent-chart-chatbot:3003
   ingress:
     host: "example-agent.{{ .Values.global.domain }}"
@@ -169,6 +169,6 @@ vs-agent-chart:
     - name: SELF_ISSUED_VTC_SERVICE_TYPE
       value: "AI Agent"
     - name: SELF_ISSUED_VTC_SERVICE_DESCRIPTION
-      value: "Example AI agent for the EAFIT Challenge"
+      value: "Asistente de pre-auditoría en Colombia - EAFIT Challenge"
     - name: SELF_ISSUED_VTC_SERVICE_MINIMUMAGEREQUIRED
       value: "1"
