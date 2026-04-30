@@ -82,11 +82,15 @@ chatbot:
     - name: APP_PORT
       value: '3003'
     - name: LOG_LEVEL
-      value: '3'
+      value: 'info'
     - name: LLM_PROVIDER
-      value: 'openai'
-    - name: OPENAI_MODEL
-      value: 'gpt-5.4-mini'
+      value: 'anthropic'
+    - name: ANTHROPIC_MODEL
+      value: 'claude-haiku-4-5-20251001'
+    - name: OPENAI_BASE_URL
+      value: 'https://api.voyageai.com/v1'
+    - name: OPENAI_EMBEDDINGS_MODEL
+      value: 'voyage-multilingual-2'
     - name: VECTOR_STORE
       value: 'redis'
     - name: VECTOR_INDEX_NAME
@@ -140,7 +144,7 @@ artemis:
 vs-agent-chart:
   enabled: true
   name: example-agent
-  didcommLabel: 'Asistente de Pre-Auditoría'
+  didcommLabel: 'Asistente de Pre-Auditoría Colombia'
   didcommInvitationImageUrl: 'https://hologram.zone/images/verana.svg'
   eventsBaseUrl: http://example-agent-chart-chatbot:3003
   ingress:
@@ -159,7 +163,7 @@ vs-agent-chart:
     - name: REDIS_HOST
       value: "example-agent-chart-redis"
     - name: AGENT_LOG_LEVEL
-      value: "3"
+      value: "info"
     - name: SELF_ISSUED_VTC_ORG_TYPE
       value: "PRIVATE"
     - name: SELF_ISSUED_VTC_ORG_COUNTRYCODE
@@ -167,8 +171,8 @@ vs-agent-chart:
     - name: SELF_ISSUED_VTC_ORG_ADDRESS
       value: "Medellin, Colombia"
     - name: SELF_ISSUED_VTC_SERVICE_TYPE
-      value: "AI Agent"
+      value: "AIAgent"
     - name: SELF_ISSUED_VTC_SERVICE_DESCRIPTION
-      value: "Asistente de pre-auditoría en Colombia - EAFIT Challenge"
+      value: "Asistente de pre-auditoría en Colombia especializado en NIAs y cumplimiento normativo."
     - name: SELF_ISSUED_VTC_SERVICE_MINIMUMAGEREQUIRED
-      value: "1"
+      value: "0"
