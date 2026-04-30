@@ -20,4 +20,4 @@ config.env
 data/docs/
 
 # Acceso a Kubernetes
-team_c_kubeconfig.yaml
+kubeconfig.yaml
