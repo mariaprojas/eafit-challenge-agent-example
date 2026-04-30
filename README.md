@@ -1,97 +1,101 @@
-# EAFIT Challenge — Example Agent
+# Asistente de Pre-Auditoría (Colombia) - EAFIT Challenge
 
-An example AI agent with GitHub MCP integration, deployed as a Verifiable Service on the [Verana](https://verana.io) ecosystem. This is part of the [EAFIT Challenge](https://github.com/verana-labs/eafit-challenge).
+Un agente de IA especializado en pre-auditoría, cumplimiento normativo y gestión de riesgos en Colombia, desplegado como un Servicio Verificable (Verifiable Service) en el ecosistema [Verana](https://verana.io). Este proyecto es parte del [EAFIT Challenge](https://github.com/verana-labs/eafit-challenge).
 
-## Architecture
+## Arquitectura
 
-This example agent is built with the [hologram-generic-ai-agent-vs](https://github.com/2060-io/hologram-generic-ai-agent-vs) container, which provides a ready-to-use AI chatbot with DIDComm messaging, verifiable credential authentication, and MCP tool integration.
+Este agente está construido con el contenedor [hologram-generic-ai-agent-vs](https://github.com/2060-io/hologram-generic-ai-agent-vs), que proporciona un chatbot de IA listo para usar con mensajería DIDComm, autenticación de credenciales verificables, capacidades RAG (Retrieval-Augmented Generation) y herramientas MCP.
 
-You can find other agent examples (GitHub Agent, Wise Agent, etc.) in the [hologram-verifiable-services](https://github.com/2060-io/hologram-verifiable-services) repository.
+El agente funciona como un **servicio hijo** de la organización del EAFIT Challenge. Sus funciones principales son:
 
-This agent is a **child service** of the EAFIT Challenge organization. It:
+1. Recibir una **Credencial de Servicio** de la organización (prueba de que es un servicio legítimo).
+2. Utilizar la **Definición de Credencial (CredDef) de Avatar** desde `avatar.eafit.testnet.verana.network` para autenticar a los usuarios mediante solicitudes de prueba de AnonCreds.
+3. Proveer capacidades de análisis RAG sobre normativas locales e ISOs, y herramientas GitHub MCP a usuarios autenticados vía chat DIDComm cifrado.
 
-1. Receives a **Service credential** from the organization (proves it's a legitimate service)
-2. Uses the **Avatar credential definition** from `avatar.eafit.testnet.verana.network` to authenticate users via AnonCreds proof requests
-3. Provides GitHub MCP tools to authenticated users via encrypted DIDComm chat
+## Características Principales
 
-## Repository Structure
+- **Especialista en Auditoría**: Configurado para aplicar normativas locales (Colombia) y estándares internacionales (ISO 9001, ISO 14001, ISO 19011).
+- **RAG (Retrieval-Augmented Generation)**: Capacidad de leer y analizar documentos normativos, manuales de procedimiento e índices maestros proporcionados en el directorio `/docs`.
+- **LLM**: Utiliza modelos de Anthropic (Claude) por defecto para el razonamiento y generación de respuestas, e integra modelos de Voyage AI para los embeddings del sistema RAG.
+
+## Estructura del Repositorio
 
 ```
-├── config.env              # Service configuration (ports, org URLs, credDef, etc.)
-├── deployment.yaml         # Helm chart values for K8s deployment
-├── agent-pack.yaml         # Chatbot agent pack (prompts, menus, MCP config)
+├── config.env              # Configuración del servicio (puertos, credenciales, LLMs, etc.)
+├── deployment.yaml         # Valores del chart de Helm para despliegue en K8s
+├── agent-pack.yaml         # Configuración del chatbot (prompts, RAG, flujos, MCP)
 ├── common/
-│   └── common.sh           # Shared shell helpers
+│   └── common.sh           # Scripts auxiliares compartidos
 ├── docker/
-│   └── docker-compose.yml  # Local development stack
+│   ├── docker-compose.yml  # Stack de desarrollo local
+│   └── .env                # Variables de entorno para Docker Compose
 ├── scripts/
-│   ├── setup.sh            # Local setup (VS Agent + ngrok + Service credential)
-│   └── start.sh            # Start Docker Compose stack
-├── docs/
-│   └── README.md           # User-facing guide
+│   ├── setup.sh            # Configuración local (Agente VS + ngrok + Credencial de Servicio)
+│   └── start.sh            # Iniciar el stack de Docker Compose
+├── docs/                   # Documentación base para el sistema RAG (Normas ISO, Manuales)
 └── .github/
     └── workflows/
-        └── deploy.yml      # GitHub Actions workflow for K8s deployment
+        └── deploy.yml      # Flujo de GitHub Actions para despliegue en K8s
 ```
 
-## Local Development
+## Desarrollo Local
 
-### Prerequisites
+### Requisitos Previos
 
-- Docker and Docker Compose
-- [ngrok](https://ngrok.com/) (authenticated)
+- Docker y Docker Compose
+- [ngrok](https://ngrok.com/) (autenticado)
 - `curl`, `jq`
-- An OpenAI API key
+- API Keys correspondientes: `ANTHROPIC_API_KEY` (para el LLM) y `OPENAI_API_KEY` (para embeddings de Voyage AI o similar, según configuración).
 
-The setup script connects to the deployed EAFIT organization at `admin.organization.eafit.testnet.verana.network` to obtain the Service credential. No local organization instance is required.
+El script de configuración se conecta a la organización EAFIT desplegada en `admin.organization.eafit.testnet.verana.network` para obtener la Credencial de Servicio.
 
-### Quick Start
+### Inicio Rápido
 
 ```bash
-# 1. Set up the VS Agent (deploys container, gets Service credential)
+# 1. Configurar el Agente VS (despliega el contenedor, obtiene la Credencial de Servicio)
 source config.env
 ./scripts/setup.sh
 
-# 2. Start the full stack (chatbot + redis + postgres)
-export NGROK_DOMAIN=<your-ngrok-domain>
-export OPENAI_API_KEY=sk-...
+# 2. Configurar variables de entorno y levantar el stack completo (chatbot + redis + postgres)
+export NGROK_DOMAIN=<tu-dominio-ngrok>
+export ANTHROPIC_API_KEY=sk-ant-...
+export OPENAI_API_KEY=pa-... # Utilizado en este caso para la API compatible de Voyage AI
 ./scripts/start.sh
 ```
 
-> Note: if you don't want to use an OPENAI_API_KEY, you can configure any other LLM, refer to [agent pack schema](https://github.com/2060-io/hologram-generic-ai-agent-vs/blob/main/docs/agent-pack-schema.md) for available options.
+## Despliegue en Kubernetes (GitHub Actions)
 
-## Kubernetes Deployment (GitHub Actions)
+El flujo `.github/workflows/deploy.yml` despliega el agente en el clúster K8s compartido del EAFIT Challenge.
 
-The `.github/workflows/deploy.yml` workflow deploys the agent to the shared EAFIT Challenge K8s cluster.
+### Secretos de GitHub Requeridos
 
-### Required GitHub Secrets
-
-| Secret | Description |
+| Secreto | Descripción |
 | ------ | ----------- |
-| `OVH_KUBECONFIG` | Kubeconfig for the K8s cluster |
-| `K8S_NAMESPACE` | Target namespace (ideally, use your team name) |
-| `EXAMPLE_AGENT_OPENAI_API_KEY` | OpenAI API key for the chatbot |
-| `EXAMPLE_AGENT_POSTGRES_PASSWORD` | PostgreSQL password |
-| `EXAMPLE_AGENT_MCP_CONFIG_ENCRYPTION_KEY` | Encryption key for MCP user configs (generate with `openssl rand -hex 32`) |
-| `EXAMPLE_AGENT_WALLET_KEY` | VS Agent wallet encryption key (generate with `openssl rand -base64 32`) |
-| `EXAMPLE_AGENT_VSAGENT_DB_PASSWORD` | VS Agent internal DB password |
+| `OVH_KUBECONFIG` | Kubeconfig para el clúster K8s |
+| `K8S_NAMESPACE` | Espacio de nombres objetivo (nombre de tu equipo) |
+| `EXAMPLE_AGENT_ANTHROPIC_API_KEY` | API Key de Anthropic para el chatbot |
+| `EXAMPLE_AGENT_OPENAI_API_KEY` | API Key para embeddings (Voyage AI/OpenAI) |
+| `EXAMPLE_AGENT_POSTGRES_PASSWORD` | Contraseña de PostgreSQL |
+| `EXAMPLE_AGENT_MCP_CONFIG_ENCRYPTION_KEY` | Llave de cifrado para configs de usuarios MCP (generar con `openssl rand -hex 32`) |
+| `EXAMPLE_AGENT_WALLET_KEY` | Llave de cifrado de la billetera del Agente VS (generar con `openssl rand -base64 32`) |
+| `EXAMPLE_AGENT_VSAGENT_DB_PASSWORD` | Contraseña de la BD interna del Agente VS |
 
-### Deployment
+### Despliegue
 
-Run the workflow from the GitHub Actions tab with step `all` to deploy and obtain credentials.
+Ejecuta el flujo desde la pestaña de GitHub Actions con el paso `all` para desplegar y obtener credenciales.
 
-The agent will be available at the URL configured in `AGENT_PUBLIC_URL` (see below).
+El agente estará disponible en la URL configurada en `AGENT_PUBLIC_URL` (ver abajo).
 
-## Configuration
+## Configuración
 
-Key settings in `config.env`:
+Ajustes clave en `config.env`:
 
-- **`AGENT_PUBLIC_URL`** — Public URL of the deployed agent. For student teams, use the convention: `https://<agentname>.agents.<team_name>.teams.eafit.testnet.verana.network`
-- **`CREDENTIAL_DEFINITION_ID`** — AnonCreds credDef from the EAFIT Avatar service (hardcoded)
-- **`ORG_VS_PUBLIC_URL`** — Public URL of the EAFIT organization agent
-- **`SERVICE_NAME`** — Display name shown in the Service credential
-- **`OPENAI_MODEL`** — LLM model for the chatbot
+- **`AGENT_PUBLIC_URL`** — URL pública del agente desplegado. Convención: `https://<agentname>.agents.<team_name>.teams.eafit.testnet.verana.network`
+- **`CREDENTIAL_DEFINITION_ID`** — CredDef de AnonCreds del servicio Avatar de EAFIT (fijado).
+- **`ORG_VS_PUBLIC_URL`** — URL pública del agente de la organización EAFIT.
+- **`SERVICE_NAME`** — Nombre a mostrar en la Credencial de Servicio (ej. "Asistente de Pre-Auditoría Colombia").
+- **`LLM_PROVIDER`** y **`ANTHROPIC_MODEL`** — Proveedor y modelo a usar para el chatbot.
 
-## License
+## Licencia
 
 Apache-2.0
