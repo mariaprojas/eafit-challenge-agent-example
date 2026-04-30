@@ -18,3 +18,6 @@ config.env
 
 # Carpeta de conocimiento local (RAG)
 data/docs/
+
+# Acceso a Kubernetes
+team_c_kubeconfig.yaml
