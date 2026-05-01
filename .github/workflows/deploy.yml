@@ -74,7 +74,10 @@ jobs:
         if: inputs.step == 'deploy' || inputs.step == 'all'
         run: |
           NAMESPACE="${CHART_NAMESPACE}"
-
+          
+          # Borrar secret viejo para forzar resincronización con Postgres
+          kubectl delete secret example-agent-db-secret \
+          --namespace "$NAMESPACE" --ignore-not-found=true
           # VS Agent DB secret
           VSAGENT_DB_PWD="${{ secrets.EXAMPLE_AGENT_VSAGENT_DB_PASSWORD }}"
           if [ -z "$VSAGENT_DB_PWD" ]; then
@@ -128,10 +131,6 @@ jobs:
         run: |
           sleep 15
           kubectl logs -n "$CHART_NAMESPACE" statefulset/mariaprojas-agent-chart-chatbot --tail=80 || true
-          kubectl delete pvc pvc-mariaprojas-agent-chart-postgres-mariaprojas-agent-chart-postgres-0 -n "$CHART_NAMESPACE" --force || true
-          kubectl delete pod mariaprojas-agent-chart-postgres-0 -n "$CHART_NAMESPACE" --force || true
-          sleep 20
-          kubectl delete pod mariaprojas-agent-chart-chatbot-0 -n "$CHART_NAMESPACE" --force || true
           sleep 30
           kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=80 || true
         
