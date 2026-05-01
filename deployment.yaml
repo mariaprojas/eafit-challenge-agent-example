@@ -161,7 +161,7 @@ vs-agent-chart:
     - name: USE_CORS
       value: "true"
     - name: REDIS_HOST
-      value: "mariaprojas-agent-redis"
+      value: "mariaprojas-agent"
     - name: AGENT_LOG_LEVEL
       value: "info"
     - name: SELF_ISSUED_VTC_ORG_TYPE
