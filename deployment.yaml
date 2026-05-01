@@ -104,11 +104,11 @@ chatbot:
     - name: AGENT_MEMORY_WINDOW
       value: '20'
     - name: REDIS_URL
-      value: 'redis://example-agent-chart-redis.{{ .Release.Namespace }}:6379'
+      value: 'redis://mariaprojas-agent-chart-redis.{{ .Release.Namespace }}:6379'
     - name: VS_AGENT_ADMIN_URL
-      value: 'http://example-agent.{{ .Release.Namespace }}:3000'
+      value: 'http://mariaprojas-agent.{{ .Release.Namespace }}:3000'
     - name: POSTGRES_HOST
-      value: 'example-agent-chart-postgres.{{ .Release.Namespace }}'
+      value: 'mariaprojas-agent-chart-postgres.{{ .Release.Namespace }}'
     - name: CREDENTIAL_DEFINITION_ID
       value: '{{ .Values.credentialDefinitionId | default "" }}'
     - name: GITHUB_MCP_URL
