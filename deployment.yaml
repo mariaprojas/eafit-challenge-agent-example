@@ -113,16 +113,6 @@ chatbot:
       value: '{{ .Values.credentialDefinitionId | default "" }}'
     - name: GITHUB_MCP_URL
       value: 'https://api.githubcopilot.com/mcp/'
-    - name: EXAMPLE_AGENT_MCP_CONFIG_ENCRYPTION_KEY
-      valueFrom:
-        secretKeyRef:
-          name: example-agent-secrets
-          key: MCP_CONFIG_ENCRYPTION_KEY
-    - name: EXAMPLE_AGENT_VSAGENT_DB_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: example-agent-vsagent-db-password
-          key: VS_DB_PASSWORD
   agentPack:
     enabled: true
     name: example-agent
