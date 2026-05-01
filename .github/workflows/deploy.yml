@@ -151,14 +151,18 @@ jobs:
       - name: Port-forward organization Agent
         if: inputs.step == 'get-credentials' || inputs.step == 'all'
         run: |
-          kubectl port-forward -n "$CHART_NAMESPACE" "svc/organization" 3000:3000 &
-          echo "ORG_PF_PID=$!" >> "$GITHUB_ENV"
-          sleep 5
-          curl -sf http://localhost:3000/v1/agent > /dev/null || {
-            echo "::error::Port-forward to organization-Agent failed"
-            exit 1
+          echo "Connecting to organization at ${ORG_VS_ADMIN_URL}..."
+          curl -sf "${ORG_VS_ADMIN_URL}/api" > /dev/null || {
+            echo "::warning::Organization admin API not reachable at ${ORG_VS_ADMIN_URL}. Attempting port-forward as fallback..."
+            kubectl port-forward -n "$CHART_NAMESPACE" "svc/organization" 3000:3000 > /dev/null 2>&1 &
+            ORG_PF_PID=$!
+            echo "ORG_PF_PID=$ORG_PF_PID" >> "$GITHUB_ENV"
+            sleep 5
+            curl -sf http://localhost:3000/api > /dev/null || {
+              echo "::error::Could not connect to organization-Agent (neither public nor local service)"
+              exit 1
+            }
           }
-          echo "Port-forward to organization-Agent on :3000"
 
       - name: Get Service credential
         if: inputs.step == 'get-credentials' || inputs.step == 'all'
