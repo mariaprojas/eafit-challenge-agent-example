@@ -141,7 +141,8 @@ jobs:
             -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d && echo
           kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
             env | grep -E 'POSTGRES' || true
-        
+          kubectl get pods -n "$CHART_NAMESPACE" | grep mariaprojas || true
+          kubectl logs -n "$CHART_NAMESPACE" statefulset/mariaprojas-agent-chart-vs-agent --tail=30 || true
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
       # -----------------------------------------------------------------------
