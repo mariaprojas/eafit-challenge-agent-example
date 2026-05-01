@@ -130,14 +130,23 @@ jobs:
       - name: Port-forward Example Agent VS Agent
         if: inputs.step == 'get-credentials' || inputs.step == 'all'
         run: |
-          kubectl port-forward -n "$CHART_NAMESPACE" "svc/example-agent" 3002:3000 &
-          echo "CHILD_PF_PID=$!" >> "$GITHUB_ENV"
-          sleep 5
-          curl -sf http://localhost:3002/v1/agent > /dev/null || {
-            echo "::error::Port-forward to Example Agent VS-Agent failed"
-            exit 1
-          }
-          echo "Port-forward to Example Agent VS-Agent on :3002"
+          echo "Waiting for VS Agent to be ready..."
+          for i in {1..5}; do
+            if ! pgrep -f "port-forward.*3002:3000" > /dev/null; then
+              echo "Attempting port-forward to svc/example-agent..."
+              kubectl port-forward -n "$CHART_NAMESPACE" "svc/example-agent" 3002:3000 > /dev/null 2>&1 &
+            fi
+            if curl -sf http://localhost:3002/v1/agent > /dev/null; then
+              echo "VS Agent is ready and responding!"
+              echo "CHILD_PF_PID=$(pgrep -f \"port-forward.*svc/example-agent\")" >> "$GITHUB_ENV"
+              exit 0
+            fi
+            echo "Attempt $i/5: VS Agent not ready, sleeping 10s..."
+            sleep 10
+          done
+          echo "::error::VS Agent API failed to respond."
+          kubectl get pods -n "$CHART_NAMESPACE"
+          exit 1
 
       - name: Port-forward organization Agent
         if: inputs.step == 'get-credentials' || inputs.step == 'all'
