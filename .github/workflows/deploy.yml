@@ -167,7 +167,11 @@ jobs:
       - name: Get Service credential
         if: inputs.step == 'get-credentials' || inputs.step == 'all'
         run: |
-          ORG_ADMIN_API="http://localhost:3000"
+          if [ -n "${ORG_PF_PID:-}" ]; then
+            ORG_ADMIN_API="http://localhost:3000"
+          else
+            ORG_ADMIN_API="${ORG_VS_ADMIN_URL}"
+          fi
           CHILD_ADMIN_API="http://localhost:3002"
           source common/common.sh
           set_network_vars "$NETWORK"
