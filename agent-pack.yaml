@@ -160,7 +160,7 @@ integrations:
   vsAgent:
     adminUrl: ${VS_AGENT_ADMIN_URL}
   postgres:
-    host: postgres
+    host: mariaprojas-agent-chart-postgres
     user: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     dbName: example-agent
