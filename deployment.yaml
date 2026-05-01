@@ -121,7 +121,7 @@ chatbot:
     - name: EXAMPLE_AGENT_VSAGENT_DB_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: EXAMPLE_AGENT_VSAGENT_DB_PASSWORD
+          name: example-agent-vsagent-db-password
           key: VS_DB_PASSWORD
   agentPack:
     enabled: true
