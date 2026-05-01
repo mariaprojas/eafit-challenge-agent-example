@@ -50,7 +50,7 @@ postgres:
     - name: PGDATA
       value: '/var/lib/postgresql/data/pgdata'
   secret:
-    POSTGRES_PASSWORD: 'placeholder'
+    POSTGRES_PASSWORD: ''
     POSTGRES_USER: 'example_agent_db'
     POSTGRES_DB: 'example-agent'
   resources:
@@ -120,7 +120,7 @@ chatbot:
     fileName: agent-pack.yaml
     existingConfigMap: 'example-agent-agent-pack'
   secret:
-    POSTGRES_PASSWORD: 'placeholder'
+    POSTGRES_PASSWORD: ''
     POSTGRES_USER: 'example_agent_db'
     POSTGRES_DB_NAME: 'example-agent'
   service:
