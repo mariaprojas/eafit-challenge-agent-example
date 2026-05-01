@@ -134,11 +134,11 @@ jobs:
           for i in {1..5}; do
             if ! pgrep -f "port-forward.*3002:3000" > /dev/null; then
               echo "Attempting port-forward to svc/example-agent..."
-              kubectl port-forward -n "$CHART_NAMESPACE" "svc/example-agent" 3002:3000 > /dev/null 2>&1 &
+              kubectl port-forward -n "$CHART_NAMESPACE" "svc/mariaprojas-agent" 3002:3000 > /dev/null 2>&1 &
             fi
             if curl -sf http://localhost:3002/v1/agent > /dev/null; then
               echo "VS Agent is ready and responding!"
-              echo "CHILD_PF_PID=$(pgrep -f \"port-forward.*svc/example-agent\")" >> "$GITHUB_ENV"
+              echo "CHILD_PF_PID=$(pgrep -f \"port-forward.*svc/mariaprojas-agent\")" >> "$GITHUB_ENV"
               exit 0
             fi
             echo "Attempt $i/5: VS Agent not ready, sleeping 10s..."
