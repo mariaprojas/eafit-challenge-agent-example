@@ -11,7 +11,7 @@ chartSource: oci://registry-1.docker.io/io2060/hologram-generic-ai-agent-chart
 chartVersion: v1.11.2
 
 global:
-  domain: team-c.teams.eafit.testnet.verana.network
+  domain: eafit.testnet.verana.network
 
 nameOverride: 'mariaprojas-agent-chart'
 
@@ -158,8 +158,8 @@ vs-agent-chart:
   didcommInvitationImageUrl: 'https://hologram.zone/images/verana.svg'
   eventsBaseUrl: http://mariaprojas-agent-chart-chatbot:3003
   ingress:
-    host: "mariaprojas-agent.{{ .Values.global.domain }}"
-    tlsSecret: "mariaprojas-agent.{{ .Values.global.domain }}-tls"
+    host: "mariaprojas-agent.team-c.teams.eafit.testnet.verana.network"
+    tlsSecret: "mariaprojas-agent.team-c.teams.eafit.testnet.verana.network-tls"
     public:
       enableCors: true
     private:
