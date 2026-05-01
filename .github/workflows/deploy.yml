@@ -133,6 +133,11 @@ jobs:
           kubectl logs -n "$CHART_NAMESPACE" statefulset/mariaprojas-agent-chart-chatbot --tail=80 || true
           sleep 30
           kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=80 || true
+          # DEBUG TEMPORAL - borrar después
+          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-postgres-0 -- \
+            env | grep POSTGRES || true
+          kubectl get secret example-agent-db-secret -n "$CHART_NAMESPACE" \
+            -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d && echo
         
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
