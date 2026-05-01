@@ -138,6 +138,8 @@ jobs:
             env | grep POSTGRES || true
           kubectl get secret example-agent-db-secret -n "$CHART_NAMESPACE" \
             -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d && echo
+          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
+            env | grep -E 'POSTGRES' || true
         
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
