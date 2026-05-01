@@ -116,7 +116,7 @@ jobs:
             --set vs-agent-chart.extraEnv[0].value="Example Agent" \
             --set vs-agent-chart.extraEnv[1].name=AGENT_WALLET_KEY \
             --set vs-agent-chart.extraEnv[1].value="${{ secrets.EXAMPLE_AGENT_WALLET_KEY }}" \
-            --wait --timeout 300s
+            
 
       - name: Restart chatbot to pick up ConfigMap changes
         if: inputs.step == 'deploy' || inputs.step == 'all'
