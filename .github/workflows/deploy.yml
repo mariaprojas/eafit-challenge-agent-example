@@ -142,7 +142,8 @@ jobs:
           kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
             env | grep -E 'POSTGRES' || true
           kubectl get pods -n "$CHART_NAMESPACE" | grep mariaprojas || true
-          kubectl logs -n "$CHART_NAMESPACE" statefulset/mariaprojas-agent-chart-vs-agent --tail=30 || true
+          kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-0 --tail=50 || true
+          kubectl get svc -n "$CHART_NAMESPACE" | grep mariaprojas || true
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
       # -----------------------------------------------------------------------
