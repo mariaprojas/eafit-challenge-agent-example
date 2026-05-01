@@ -11,9 +11,9 @@ chartSource: oci://registry-1.docker.io/io2060/hologram-generic-ai-agent-chart
 chartVersion: v1.11.2
 
 global:
-  domain: eafit.testnet.verana.network
+  domain: team-c.teams.eafit.testnet.verana.network
 
-nameOverride: 'example-agent-chart'
+nameOverride: 'mariaprojas-agent-chart'
 
 # Credential definition ID for user authentication (injected from config.env by workflow)
 credentialDefinitionId: ''
@@ -153,13 +153,13 @@ artemis:
 # === VS Agent ===
 vs-agent-chart:
   enabled: true
-  name: example-agent
+  name: mariaprojas-agent
   didcommLabel: 'Asistente de Pre-Auditoría Colombia'
   didcommInvitationImageUrl: 'https://hologram.zone/images/verana.svg'
-  eventsBaseUrl: http://example-agent-chart-chatbot:3003
+  eventsBaseUrl: http://mariaprojas-agent-chart-chatbot:3003
   ingress:
-    host: "example-agent.{{ .Values.global.domain }}"
-    tlsSecret: "example-agent.{{ .Values.global.domain }}-cert"
+    host: "mariaprojas-agent.{{ .Values.global.domain }}"
+    tlsSecret: "mariaprojas-agent.{{ .Values.global.domain }}-tls"
     public:
       enableCors: true
     private:
@@ -167,11 +167,11 @@ vs-agent-chart:
       host: ""
   extraEnv:
     - name: AGENT_WALLET_ID
-      value: "Example Agent"
+      value: "mariaprojas-wallet"
     - name: USE_CORS
       value: "true"
     - name: REDIS_HOST
-      value: "example-agent-chart-redis"
+      value: "mariaprojas-agent-redis"
     - name: AGENT_LOG_LEVEL
       value: "info"
     - name: SELF_ISSUED_VTC_ORG_TYPE
