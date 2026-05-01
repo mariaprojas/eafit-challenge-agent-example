@@ -123,7 +123,11 @@ jobs:
         run: |
           kubectl rollout restart statefulset/example-agent-chart-chatbot -n "$CHART_NAMESPACE"
           kubectl rollout status statefulset/example-agent-chart-chatbot -n "$CHART_NAMESPACE" --timeout=120s || true
-
+      - name: Check chatbot logs
+        if: inputs.step == 'deploy' || inputs.step == 'all'
+        run: |
+          sleep 15
+          kubectl logs -n "$CHART_NAMESPACE" statefulset/mariaprojas-agent-chart-chatbot --tail=80 || true
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
       # -----------------------------------------------------------------------
