@@ -128,11 +128,13 @@ jobs:
         run: |
           sleep 15
           kubectl logs -n "$CHART_NAMESPACE" statefulset/mariaprojas-agent-chart-chatbot --tail=80 || true
+          kubectl delete pvc pvc-mariaprojas-agent-chart-postgres-mariaprojas-agent-chart-postgres-0 -n "$CHART_NAMESPACE" --force || true
+          kubectl delete pod mariaprojas-agent-chart-postgres-0 -n "$CHART_NAMESPACE" --force || true
+          sleep 20
           kubectl delete pod mariaprojas-agent-chart-chatbot-0 -n "$CHART_NAMESPACE" --force || true
           sleep 30
           kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=80 || true
-          kubectl get pvc -n "$CHART_NAMESPACE"
-          kubectl get pods -n "$CHART_NAMESPACE"
+        
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
       # -----------------------------------------------------------------------
