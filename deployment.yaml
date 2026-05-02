@@ -90,7 +90,7 @@ chatbot:
     - name: OPENAI_BASE_URL
       value: 'https://api.voyageai.com/v1'
     - name: OPENAI_EMBEDDINGS_MODEL
-      value: 'voyage-multilingual-2'
+      value: 'voyage-4-lite'
     - name: VECTOR_STORE
       value: 'redis'
     - name: VECTOR_INDEX_NAME
