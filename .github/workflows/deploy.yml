@@ -127,6 +127,7 @@ jobs:
         run: |
           kubectl rollout restart statefulset/mariaprojas-agent-chart-chatbot -n "$CHART_NAMESPACE"
           kubectl rollout status statefulset/mariaprojas-agent-chart-chatbot -n "$CHART_NAMESPACE" --timeout=120s || true
+          sleep 90
       - name: Check chatbot logs
         if: inputs.step == 'deploy' || inputs.step == 'all'
         run: |
@@ -146,6 +147,8 @@ jobs:
           kubectl get svc -n "$CHART_NAMESPACE" | grep mariaprojas || true
           sleep 30
           kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=30 || true
+          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
+            env | grep -E 'OPENAI' || true
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
       # -----------------------------------------------------------------------
