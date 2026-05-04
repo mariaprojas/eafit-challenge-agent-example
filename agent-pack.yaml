@@ -139,23 +139,74 @@ flows:
 
 mcp:
   servers:
-    - name: github
-      transport: streamable-http
-      url: https://api.githubcopilot.com/mcp/
-      headers:
-        Authorization: "Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}"
+    - name: google-sheets
+      transport: stdio
+      command: npx
+      args:
+        - "-y"
+        - "@gpwork4u/google-sheets-mcp"
       accessMode: user-controlled
       userConfig:
         fields:
           - name: token
-            type: secret
+            type: oauth
             label:
-              en: "Please enter your GitHub Personal Access Token:"
-              es: "Por favor, ingresa tu Token de Acceso Personal de GitHub:"
+              en: "Log in with Google (Sheets)"
+              es: "Iniciar sesión con Google (Sheets)"
+            authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth"
+            tokenUrl: "https://oauth2.googleapis.com/token"
+            clientId: "${GOOGLE_CLIENT_ID}"
+            scopes: 
+              - "https://www.googleapis.com/auth/spreadsheets"
             headerTemplate: "Bearer {value}"
       toolAccess:
         default: public
 
+    - name: google-docs
+      transport: stdio
+      command: npx
+      args:
+        - "-y"
+        - "@gpwork4u/google-docs-mcp"
+      accessMode: user-controlled
+      userConfig:
+        fields:
+          - name: token
+            type: oauth
+            label:
+              en: "Log in with Google (Docs)"
+              es: "Iniciar sesión con Google (Docs)"
+            authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth"
+            tokenUrl: "https://oauth2.googleapis.com/token"
+            clientId: "${GOOGLE_CLIENT_ID}"
+            scopes: 
+              - "https://www.googleapis.com/auth/documents"
+            headerTemplate: "Bearer {value}"
+      toolAccess:
+        default: public
+
+    - name: google-drive
+      transport: stdio
+      command: npx
+      args:
+        - "-y"
+        - "@modelcontextprotocol/server-gdrive"
+      accessMode: user-controlled
+      userConfig:
+        fields:
+          - name: token
+            type: oauth
+            label:
+              en: "Log in with Google (Drive)"
+              es: "Iniciar sesión con Google (Drive)"
+            authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth"
+            tokenUrl: "https://oauth2.googleapis.com/token"
+            clientId: "${GOOGLE_CLIENT_ID}"
+            scopes: 
+              - "https://www.googleapis.com/auth/drive.readonly"
+            headerTemplate: "Bearer {value}"
+      toolAccess:
+        default: public
 integrations:
   vsAgent:
     adminUrl: ${VS_AGENT_ADMIN_URL}
