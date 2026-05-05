@@ -100,7 +100,7 @@ chatbot:
     - name: RAG_DOCS_PATH
       value: '/app/rag/docs'
     - name: AGENT_MEMORY_BACKEND
-      value: 'redis'
+      value: 'memory'
     - name: AGENT_MEMORY_WINDOW
       value: '20'
     - name: REDIS_URL
