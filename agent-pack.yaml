@@ -93,6 +93,9 @@ rag:
   docsPath: ./docs
   chunkSize: 1000
   chunkOverlap: 200
+  embeddings:
+    provider: openai
+    model: voyage-4-lite
   remoteUrls:
     - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/ISO_19011.md
     - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/IntegracionUsosYSistemas.md
