@@ -100,11 +100,11 @@ chatbot:
     - name: RAG_DOCS_PATH
       value: '/app/rag/docs'
     - name: AGENT_MEMORY_BACKEND
-      value: 'memory'
+      value: 'redis'
     - name: AGENT_MEMORY_WINDOW
       value: '20'
     - name: REDIS_URL
-      value: 'redis://mariaprojas-agent-chart-redis.{{ .Release.Namespace }}:6379'
+      value: 'redis://mariaprojas-agent.{{ .Release.Namespace }}:6379'
     - name: VS_AGENT_ADMIN_URL
       value: 'http://mariaprojas-agent.{{ .Release.Namespace }}:3000'
     - name: POSTGRES_HOST
