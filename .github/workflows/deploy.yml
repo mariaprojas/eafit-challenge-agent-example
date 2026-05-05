@@ -149,6 +149,7 @@ jobs:
           kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=30 || true
           kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
             env | grep -E 'OPENAI' || true
+          kubectl logs -n "$CHART_NAMESPACE" mariaprojas-agent-0 --tail=50 || true
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
       # -----------------------------------------------------------------------
