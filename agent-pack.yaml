@@ -156,6 +156,7 @@ mcp:
             authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth"
             tokenUrl: "https://oauth2.googleapis.com/token"
             clientId: "${GOOGLE_CLIENT_ID}"
+            clientSecret: "${GOOGLE_CLIENT_SECRET}"
             scopes: 
               - "https://www.googleapis.com/auth/spreadsheets"
             headerTemplate: "Bearer {value}"
@@ -179,6 +180,7 @@ mcp:
             authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth"
             tokenUrl: "https://oauth2.googleapis.com/token"
             clientId: "${GOOGLE_CLIENT_ID}"
+            clientSecret: "${GOOGLE_CLIENT_SECRET}"
             scopes: 
               - "https://www.googleapis.com/auth/documents"
             headerTemplate: "Bearer {value}"
@@ -202,6 +204,7 @@ mcp:
             authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth"
             tokenUrl: "https://oauth2.googleapis.com/token"
             clientId: "${GOOGLE_CLIENT_ID}"
+            clientSecret: "${GOOGLE_CLIENT_SECRET}"
             scopes: 
               - "https://www.googleapis.com/auth/drive.readonly"
             headerTemplate: "Bearer {value}"
