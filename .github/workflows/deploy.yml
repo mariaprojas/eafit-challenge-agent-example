@@ -140,6 +140,8 @@ jobs:
           kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
             nc -zv mariaprojas-agent-chart-redis 6379 2>&1 || true
           kubectl logs -n "$CHART_NAMESPACE" mariaprojas-agent-chart-redis-0 --tail=20 || true
+          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
+            redis-cli -h mariaprojas-agent-chart-redis -p 6379 ping || true
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
       # -----------------------------------------------------------------------
