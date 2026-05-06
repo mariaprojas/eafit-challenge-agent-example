@@ -132,31 +132,14 @@ jobs:
         if: inputs.step == 'deploy' || inputs.step == 'all'
         run: |
           sleep 15
-          kubectl logs -n "$CHART_NAMESPACE" statefulset/mariaprojas-agent-chart-chatbot --tail=80 || true
-          sleep 30
-          kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=80 || true
-          # DEBUG TEMPORAL - borrar después
-          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-postgres-0 -- \
-            env | grep POSTGRES || true
-          kubectl get secret example-agent-db-secret -n "$CHART_NAMESPACE" \
-            -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d && echo
-          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
-            env | grep -E 'POSTGRES' || true
           kubectl get pods -n "$CHART_NAMESPACE" | grep mariaprojas || true
-          kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-0 --tail=50 || true
-          kubectl get svc -n "$CHART_NAMESPACE" | grep mariaprojas || true
-          sleep 30
-          kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=30 || true
           kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
-            env | grep -E 'OPENAI' || true
-          kubectl logs -n "$CHART_NAMESPACE" mariaprojas-agent-0 --tail=50 || true
-          kubectl exec -n team-c mariaprojas-agent-chart-chatbot-0 -- env | grep REDIS
-          kubectl logs -n team-c \
-            mariaprojas-agent-chart-chatbot-0 \
-            --since=30m
-          kubectl logs -n <tu-namespace> \
-            mariaprojas-agent-chart-chatbot-0 \
-            --since=10m | tail -50
+            env | grep -E 'POSTGRES|OPENAI|REDIS' || true
+          kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=50 || true
+          kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-0 --tail=30 || true
+          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
+            nc -zv mariaprojas-agent-chart-redis 6379 2>&1 || true
+          kubectl logs -n "$CHART_NAMESPACE" mariaprojas-agent-chart-redis-0 --tail=20 || true
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
       # -----------------------------------------------------------------------
