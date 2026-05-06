@@ -104,7 +104,7 @@ chatbot:
     - name: AGENT_MEMORY_WINDOW
       value: '20'
     - name: REDIS_URL
-      value: 'redis://mariaprojas-agent-chart-redis.{{ .Release.Namespace }}:6379'
+      value: 'redis://mariaprojas-agent-chart-redis:6379'
     - name: VS_AGENT_ADMIN_URL
       value: 'http://mariaprojas-agent.{{ .Release.Namespace }}:3000'
     - name: POSTGRES_HOST
