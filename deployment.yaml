@@ -92,7 +92,7 @@ chatbot:
     - name: OPENAI_EMBEDDINGS_MODEL
       value: 'voyage-4-lite'
     - name: VECTOR_STORE
-      value: 'memory'
+      value: 'redis'
     - name: VECTOR_INDEX_NAME
       value: 'example_agent'
     - name: RAG_PROVIDER
