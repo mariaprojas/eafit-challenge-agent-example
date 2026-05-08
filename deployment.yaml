@@ -111,8 +111,9 @@ chatbot:
       value: 'mariaprojas-agent-chart-postgres.{{ .Release.Namespace }}'
     - name: CREDENTIAL_DEFINITION_ID
       value: '{{ .Values.credentialDefinitionId | default "" }}'
-    - name: GITHUB_MCP_URL
-      value: 'https://api.githubcopilot.com/mcp/'
+    - name: RAG_ENABLED
+      value: 'false'
+      
   agentPack:
     enabled: true
     name: example-agent
