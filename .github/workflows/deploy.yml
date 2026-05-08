@@ -17,6 +17,9 @@ jobs:
   deploy-example-agent:
     name: Deploy Example Agent VS
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -110,7 +113,7 @@ jobs:
         with:
           context: ./docker
           push: true
-          tags: ghcr.io/mariaprojas/hologram-agent:latest
+          tags: ghcr.io/mariaprojas/eafit-challenge-agent-example/hologram-agent:latest
           
       - name: Deploy via Helm
         if: inputs.step == 'deploy' || inputs.step == 'all'
