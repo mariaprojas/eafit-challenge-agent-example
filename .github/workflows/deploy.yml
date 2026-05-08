@@ -96,7 +96,22 @@ jobs:
             --namespace "$CHART_NAMESPACE" \
             --from-file=agent-pack.yaml=agent-pack.yaml \
             --dry-run=client -o yaml | kubectl apply -f -
+      - name: Log in to GitHub Container Registry
+        if: inputs.step == 'deploy' || inputs.step == 'all'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build and push custom chatbot image
+        if: inputs.step == 'deploy' || inputs.step == 'all'
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          push: true
+          tags: ghcr.io/mariaprojas/hologram-agent:latest
+          
       - name: Deploy via Helm
         if: inputs.step == 'deploy' || inputs.step == 'all'
         run: |
