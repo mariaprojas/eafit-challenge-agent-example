@@ -110,7 +110,7 @@ llm:
 memory:
   backend: redis
   window: 8
-  redisUrl: redis://redis:6379
+  redisUrl: redis://mariaprojas-agent-chart-redis:6379
 
 flows:
   welcome:
