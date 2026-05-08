@@ -21,7 +21,28 @@ RUN printf '%s\n' \
   "fs.writeFileSync(p2, c2);" \
   "console.log('ALL PATCHES DONE');" \
   > /tmp/fix.js && node /tmp/fix.js
+# ... (los RUN anteriores siguen igual)
 
+# NUEVO PARCHE: Deshabilitar seeding de RAG
+RUN node -e " \
+  const fs = require('fs'); \
+  const p = '/app/dist/rag/langchain-rag.service.js'; \
+  let c = fs.readFileSync(p, 'utf8'); \
+  \
+  console.log('=== DISABLING RAG SEEDING ==='); \
+  const seedMatch = c.match(/async seedVectorStore\(\)[^{]*\{/); \
+  if (seedMatch) { \
+    console.log('FOUND seedVectorStore function'); \
+    c = c.replace( \
+      seedMatch[0], \
+      seedMatch[0] + ' this.logger.warn(\"RAG seeding disabled\"); return;' \
+    ); \
+    fs.writeFileSync(p, c); \
+    console.log('RAG seeding disabled SUCCESSFULLY'); \
+  } else { \
+    console.log('WARNING: Could not find seedVectorStore function'); \
+  } \
+"
 # Parche 4 NUEVO: hacer que el RAG no falle cuando el vector store está vacío
 # En lugar de lanzar error al buscar, devuelve array vacío silenciosamente
 # Reemplaza el último RUN con este:
