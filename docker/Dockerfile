@@ -24,14 +24,25 @@ RUN printf '%s\n' \
 
 # Parche 4 NUEVO: hacer que el RAG no falle cuando el vector store está vacío
 # En lugar de lanzar error al buscar, devuelve array vacío silenciosamente
+# Reemplaza el último RUN con este:
 RUN node -e " \
   const fs = require('fs'); \
   const p = '/app/dist/rag/langchain-rag.service.js'; \
   let c = fs.readFileSync(p, 'utf8'); \
-  c = c.replace( \
-    'throw new Error(\`Unsupported VECTOR_STORE: \${JSON.stringify(vectorStoreProvider)}\`)', \
-    'this.logger.warn(\`Unsupported VECTOR_STORE: \${JSON.stringify(vectorStoreProvider)} — RAG disabled\`); this.vectorStore = null; return' \
-  ); \
-  fs.writeFileSync(p, c); \
-  console.log('RAG fallback patch applied'); \
+  \
+  console.log('=== SEARCHING FOR THROW ==='); \
+  const throwMatch = c.match(/throw new Error\([^)]+VECTOR_STORE[^)]+\)/); \
+  if (throwMatch) { \
+    console.log('FOUND:', throwMatch[0]); \
+    c = c.replace( \
+      throwMatch[0], \
+      'this.logger.warn(\"Unsupported VECTOR_STORE — RAG disabled\"); this.vectorStore = null; return' \
+    ); \
+    fs.writeFileSync(p, c); \
+    console.log('RAG fallback patch applied SUCCESSFULLY'); \
+  } else { \
+    console.log('ERROR: Could not find throw statement'); \
+    console.log('FILE PREVIEW:'); \
+    console.log(c.substring(0, 2000)); \
+  } \
 "
