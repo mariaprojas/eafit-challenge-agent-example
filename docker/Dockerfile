@@ -1,7 +1,13 @@
 FROM io2060/hologram-generic-ai-agent-app:v1.12.0
+
+# Parche 1: modelo de Anthropic
 RUN sed -i "s/modelName: this.config.get('appConfig.anthropicModel') ?? 'claude-3'/modelName: process.env.ANTHROPIC_MODEL ?? 'claude-haiku-4-5-20251001'/g" /app/dist/llm/llm.service.js
+
+# Parche 2: topP/topK
 RUN FILE="/app/node_modules/.pnpm/@langchain+anthropic@0.3.33_@langchain+core@0.3.79_openai@4.104.0_ws@8.18.3_zod@3.25.76___zod@3.25.76/node_modules/@langchain/anthropic/dist/chat_models.js" && sed -i '/Object.defineProperty(this, "topP"/{n;n;n;n;s/value: -1/value: undefined/}' "$FILE" && sed -i '/Object.defineProperty(this, "topK"/{n;n;n;n;s/value: -1/value: undefined/}' "$FILE"
 RUN FILE="/app/node_modules/.pnpm/@langchain+anthropic@0.3.33_@langchain+core@0.3.79_openai@4.104.0_ws@8.18.3_zod@3.25.76___zod@3.25.76/node_modules/@langchain/anthropic/dist/chat_models.cjs" && sed -i '/Object.defineProperty(this, "topP"/{n;n;n;n;s/value: -1/value: undefined/}' "$FILE" && sed -i '/Object.defineProperty(this, "topK"/{n;n;n;n;s/value: -1/value: undefined/}' "$FILE"
+
+# Parche 3: output de Claude y memoria
 RUN printf '%s\n' \
   "const fs = require('fs');" \
   "const p1 = '/app/dist/memory/langchain-session-memory.js';" \
@@ -15,3 +21,17 @@ RUN printf '%s\n' \
   "fs.writeFileSync(p2, c2);" \
   "console.log('ALL PATCHES DONE');" \
   > /tmp/fix.js && node /tmp/fix.js
+
+# Parche 4 NUEVO: hacer que el RAG no falle cuando el vector store está vacío
+# En lugar de lanzar error al buscar, devuelve array vacío silenciosamente
+RUN node -e " \
+  const fs = require('fs'); \
+  const p = '/app/dist/rag/langchain-rag.service.js'; \
+  let c = fs.readFileSync(p, 'utf8'); \
+  c = c.replace( \
+    'throw new Error(\`Unsupported VECTOR_STORE: \${JSON.stringify(vectorStoreProvider)}\`)', \
+    'this.logger.warn(\`Unsupported VECTOR_STORE: \${JSON.stringify(vectorStoreProvider)} — RAG disabled\`); this.vectorStore = null; return' \
+  ); \
+  fs.writeFileSync(p, c); \
+  console.log('RAG fallback patch applied'); \
+"
