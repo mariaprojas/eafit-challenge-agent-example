@@ -133,14 +133,17 @@ jobs:
         run: |
           sleep 15
           kubectl get pods -n "$CHART_NAMESPACE" | grep mariaprojas || true
-          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
-            env | grep -E 'POSTGRES|OPENAI|REDIS' || true
           kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=50 || true
-          kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-0 --tail=30 || true
+          echo "=== Probando HuggingFace ==="
           kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
-            nc -zv mariaprojas-agent-chart-redis 6379 2>&1 || true
-          kubectl logs -n "$CHART_NAMESPACE" mariaprojas-agent-chart-redis-0 --tail=20 || true
-          kubectl logs -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 --since=5m 2>&1 | grep -A 20 "MaxRetries" | head -60 || true
+            curl -s -o /dev/null -w "%{http_code}" \
+            https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2 || echo "BLOQUEADO"
+
+          echo "=== Probando Cohere ==="
+          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
+            curl -s -o /dev/null -w "%{http_code}" \
+            https://api.cohere.com/v1/models \
+            -H "Authorization: Bearer test" || echo "BLOQUEADO"
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
       # -----------------------------------------------------------------------
