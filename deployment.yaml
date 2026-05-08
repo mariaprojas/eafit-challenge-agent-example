@@ -70,7 +70,7 @@ postgres:
 chatbot:
   replicas: 1
   image:
-    repository: ghcr.io/mariaprojas/hologram-agent
+    repository: ghcr.io/mariaprojas/eafit-challenge-agent-example/hologram-agent
     tag: latest
     pullPolicy: Always
   resources:
