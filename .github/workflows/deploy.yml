@@ -144,6 +144,15 @@ jobs:
             curl -s -o /dev/null -w "%{http_code}" \
             https://api.cohere.com/v1/models \
             -H "Authorization: Bearer test" || echo "BLOQUEADO"
+      - name: Watch live messages
+        if: inputs.step == 'deploy' || inputs.step == 'all'
+        run: |
+          echo "Esperando mensajes entrantes (60 segundos)..."
+          echo "MANDA UN MENSAJE EN HOLOGRAM AHORA"
+          kubectl logs -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -f --since=0s &
+          LOG_PID=$!
+          sleep 60
+          kill $LOG_PID || true
       # -----------------------------------------------------------------------
       # GET-CREDENTIALS: Obtain Service credential from eafit-challenge organization
       # -----------------------------------------------------------------------
