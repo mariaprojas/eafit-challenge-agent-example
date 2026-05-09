@@ -113,8 +113,8 @@ chatbot:
       value: 'mariaprojas-agent-chart-postgres.{{ .Release.Namespace }}'
     - name: CREDENTIAL_DEFINITION_ID
       value: '{{ .Values.credentialDefinitionId | default "" }}'
-    - name: RAG_ENABLED
-      value: 'false'
+    - name: EMBEDDINGS_PROVIDER
+      value: 'openai'
       
   agentPack:
     enabled: true
