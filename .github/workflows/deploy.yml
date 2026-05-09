@@ -139,7 +139,15 @@ jobs:
             --set vs-agent-chart.extraEnv[1].name=AGENT_WALLET_KEY \
             --set vs-agent-chart.extraEnv[1].value="${{ secrets.EXAMPLE_AGENT_WALLET_KEY }}" \
             
-
+      - name: Debug vector-store.service.js
+        run: |
+           kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- node -e "
+           const fs = require('fs');
+           const p = '/app/dist/rag/vector-store.service.js';
+           const c = fs.readFileSync(p, 'utf8');
+           const idx = c.indexOf('llmProvider');
+           console.log(c.substring(Math.max(0, idx-100), idx+300));
+           "
       - name: Restart chatbot to pick up ConfigMap changes
         if: inputs.step == 'deploy' || inputs.step == 'all'
         run: |
