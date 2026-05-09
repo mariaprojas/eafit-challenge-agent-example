@@ -153,9 +153,15 @@ jobs:
           kubectl get pods -n "$CHART_NAMESPACE" | grep mariaprojas || true
           kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=50 || true
           echo "=== Probando HuggingFace ==="
-      - name: Test Cohere desde cluster
+      - name: Inspect embeddings provider logic
         run: |
-           kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- node -e "const https = require('https'); const req = https.request({ hostname: 'api.cohere.com', path: '/v1/embed', method: 'POST', headers: { 'Authorization': 'Bearer ${{ secrets.COHERE_API_KEY }}', 'Content-Type': 'application/json' } }, res => console.log('Cohere desde cluster:', res.statusCode)); req.write(JSON.stringify({ texts: ['hello'], model: 'embed-english-light-v3.0', input_type: 'search_document' })); req.end(); req.on('error', e => console.error('BLOQUEADO:', e.message));"
+          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- node -e "
+          const fs = require('fs');
+          const p = '/app/dist/rag/vector-store.service.js';
+          const c = fs.readFileSync(p, 'utf8');
+          const idx = c.indexOf('embeddings provider');
+          console.log(c.substring(Math.max(0, idx-500), idx+500));
+          "
       - name: Watch live messages
         if: inputs.step == 'deploy' || inputs.step == 'all'
         run: |
