@@ -88,27 +88,27 @@ llm:
     - PROHIBICIÓN ESTRICTA DE FORMATO: No utilices nunca el símbolo '#' ni el doble asterisco '**' bajo ninguna circunstancia. Si necesitas resaltar algo, usa letras MAYÚSCULAS o un solo asterisco '*'. Estructura la respuesta solo con saltos de línea simples.
     - Si ya salió el greetingMessage no saludes de nuevo"
 
-#rag:
-#  provider: langchain
-#  docsPath: ./docs
-#  chunkSize: 1000
-#  chunkOverlap: 200
-#  embeddings:
- #   provider: openai
-  #  model: voyage-4-lite
-  #remoteUrls:
-   # - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/ISO_19011.md
-   # - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/IntegracionUsosYSistemas.md
-   # - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/Manual%20de%20Procedimiento_%20Protocolo%20de%20Documentaci%C3%B3n%20y%20Gesti%C3%B3n%20de%20No%20Conformidades%20ISO%209001.md
-   # - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/Nota%20de%20S%C3%ADntesis%20T%C3%A9cnica_%20Master%20Index%20del%20Proyecto%20de%20Auditor%C3%ADa%20ISO%2014001_2015.md
-   # - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/Nota%20de%20S%C3%ADntesis%20T%C3%A9cnica_%20%C3%8Dndice%20Maestro%20del%20Proyecto%20de%20Auditor%C3%ADa%20(Master%20Index).md
-   # - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/norma-iso-9001.md
-  #vectorStore:
-   # type: redis
-   # indexName: example-agent
+rag:
+  provider: langchain
+  docsPath: ./docs
+  chunkSize: 1000
+  chunkOverlap: 200
+  embeddings:
+    provider: openai
+    model: embed-english-light-v3.0
+  remoteUrls:
+    - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/ISO_19011.md
+    - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/IntegracionUsosYSistemas.md
+    - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/Manual%20de%20Procedimiento_%20Protocolo%20de%20Documentaci%C3%B3n%20y%20Gesti%C3%B3n%20de%20No%20Conformidades%20ISO%209001.md
+    - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/Nota%20de%20S%C3%ADntesis%20T%C3%A9cnica_%20Master%20Index%20del%20Proyecto%20de%20Auditor%C3%ADa%20ISO%2014001_2015.md
+    - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/Nota%20de%20S%C3%ADntesis%20T%C3%A9cnica_%20%C3%8Dndice%20Maestro%20del%20Proyecto%20de%20Auditor%C3%ADa%20(Master%20Index).md
+    - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/norma-iso-9001.md
+  vectorStore:
+    type: redis
+    indexName: example-agent
 
 memory:
-  backend: redis
+  backend: postgres
   window: 8
   redisUrl: redis://mariaprojas-agent-chart-redis:6379
 
