@@ -153,15 +153,9 @@ jobs:
           kubectl get pods -n "$CHART_NAMESPACE" | grep mariaprojas || true
           kubectl logs -n "$CHART_NAMESPACE" pod/mariaprojas-agent-chart-chatbot-0 --tail=50 || true
           echo "=== Probando HuggingFace ==="
-          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
-            curl -s -o /dev/null -w "%{http_code}" \
-            https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2 || echo "BLOQUEADO"
-
-          echo "=== Probando Cohere ==="
-          kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- \
-            curl -s -o /dev/null -w "%{http_code}" \
-            https://api.cohere.com/v1/models \
-            -H "Authorization: Bearer test" || echo "BLOQUEADO"
+      - name: Test Cohere desde cluster
+        run: |
+           kubectl exec -n "$CHART_NAMESPACE" mariaprojas-agent-chart-chatbot-0 -- node -e "const https = require('https'); const req = https.request({ hostname: 'api.cohere.com', path: '/v1/embed', method: 'POST', headers: { 'Authorization': 'Bearer ${{ secrets.COHERE_API_KEY }}', 'Content-Type': 'application/json' } }, res => console.log('Cohere desde cluster:', res.statusCode)); req.write(JSON.stringify({ texts: ['hello'], model: 'embed-english-light-v3.0', input_type: 'search_document' })); req.end(); req.on('error', e => console.error('BLOQUEADO:', e.message));"
       - name: Watch live messages
         if: inputs.step == 'deploy' || inputs.step == 'all'
         run: |
