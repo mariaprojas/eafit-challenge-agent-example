@@ -90,9 +90,9 @@ chatbot:
     - name: ANTHROPIC_MODEL
       value: 'claude-haiku-4-5-20251001'
     - name: OPENAI_BASE_URL
-      value: 'https://api.voyageai.com/v1'
+      value: 'https://api.cohere.com/compatibility/v1'
     - name: OPENAI_EMBEDDINGS_MODEL
-      value: 'voyage-4-lite'
+      value: 'embed-english-light-v3.0'
     - name: VECTOR_STORE
       value: 'redis'
     - name: VECTOR_INDEX_NAME
