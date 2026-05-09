@@ -92,7 +92,7 @@ chatbot:
     - name: OPENAI_BASE_URL
       value: 'https://api.cohere.com/compatibility/v1'
     - name: OPENAI_EMBEDDINGS_MODEL
-      value: 'embed-english-light-v3.0'
+      value: 'embed-english-v3.0'
     - name: VECTOR_STORE
       value: 'redis'
     - name: VECTOR_INDEX_NAME
