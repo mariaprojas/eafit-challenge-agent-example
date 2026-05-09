@@ -95,7 +95,7 @@ rag:
   chunkOverlap: 200
   embeddings:
     provider: openai
-    model: embed-english-light-v3.0
+    model: embed-english-v3.0
   remoteUrls:
     - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/ISO_19011.md
     - https://raw.githubusercontent.com/mariaprojas/eafit-challenge-agent-example/refs/heads/main/docs/IntegracionUsosYSistemas.md
