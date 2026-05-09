@@ -159,8 +159,8 @@ jobs:
           const fs = require('fs');
           const p = '/app/dist/llm/llm.service.js';
           const c = fs.readFileSync(p, 'utf8');
-          const idx = c.indexOf('llmProvider');
-          console.log(c.substring(Math.max(0, idx-200), idx+1000));
+          const idx = c.indexOf('anthropic');
+          console.log(c.substring(Math.max(0, idx-200), idx+800));
           "
       - name: Watch live messages
         if: inputs.step == 'deploy' || inputs.step == 'all'
